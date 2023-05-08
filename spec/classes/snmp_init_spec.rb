@@ -612,7 +612,7 @@ describe 'snmp' do
           ).that_requires('Package[snmpd]').that_notifies('Service[snmpd]')
         }
         case facts[:os]['release']['major']
-        when '8', '9', '10', '16.04', '18.04', '20.04', '22.04'
+        when '8', '9', '10', '11', '16.04', '18.04', '20.04', '22.04'
           it {
             is_expected.to contain_file('snmptrapd.sysconfig').with(
               ensure: 'present',
