@@ -1,6 +1,6 @@
 {
   "name": "puppet-snmp",
-  "version": "6.0.0",
+  "version": "6.0.1-rc0",
   "author": "Vox Pupuli",
   "summary": "Simple Network Management Protocol is for monitoring network and computer equipment. Net-SNMP implements v1, v2c, and v3 on both IPv4 and IPv6.",
   "license": "Apache-2.0",
@@ -19,26 +19,36 @@
     },
     {
       "name": "puppet/systemd",
-      "version_requirement": ">= 2.5.1 < 4.0.0"
+      "version_requirement": ">= 2.5.1 < 5.0.0"
     }
   ],
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "7"
+        "7",
+        "8",
+        "9"
       ]
     },
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "7"
+        "7",
+        "8",
+        "9"
       ]
     },
     {
       "operatingsystem": "OracleLinux",
       "operatingsystemrelease": [
         "7"
+      ]
+    },
+    {
+      "operatingsystem": "FreeBSD",
+      "operatingsystemrelease": [
+        "12"
       ]
     },
     {
@@ -51,6 +61,7 @@
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
         "9",
+        "11",
         "10"
       ]
     },
@@ -60,6 +71,14 @@
         "18.04",
         "20.04",
         "22.04"
+      ]
+    },
+    {
+      "operatingsystem": "Darwin",
+      "operatingsystemrelease": [
+        "18",
+        "19",
+        "20"
       ]
     }
   ],

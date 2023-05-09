@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'snmp::client' do
@@ -18,6 +20,7 @@ describe 'snmp::client' do
             name: 'net-snmp-utils'
           )
         }
+
         it {
           is_expected.to contain_file('snmp.conf').with(
             ensure: 'present',
@@ -34,6 +37,7 @@ describe 'snmp::client' do
             name: 'snmp'
           )
         }
+
         it {
           is_expected.to contain_file('snmp.conf').with(
             ensure: 'present',
@@ -45,6 +49,7 @@ describe 'snmp::client' do
         }
       when 'Suse'
         it { is_expected.not_to contain_package('snmp-client') }
+
         it {
           is_expected.to contain_file('snmp.conf').with(
             ensure: 'present',
@@ -55,18 +60,44 @@ describe 'snmp::client' do
             require: nil
           )
         }
+      when 'FreeBSD'
+        it {
+          is_expected.not_to contain_package('snmp-client').with(
+            ensure: 'present',
+            name: 'net-snmp'
+          )
+        }
+
+        it {
+          is_expected.to contain_file('snmp.conf').with(
+            path: '/usr/local/etc/snmp/snmp.conf'
+          )
+        }
+      when 'Darwin'
+        it {
+          is_expected.not_to contain_package('snmp-client').with(
+            ensure: 'present'
+          )
+        }
+
+        it {
+          is_expected.to contain_file('snmp.conf').with(
+            path: '/private/etc/snmp/snmp.conf'
+          )
+        }
       end
     end
 
-    context "on #{os} with ensure => 'absent' " do
+    context "on #{os} with ensure => 'absent'" do
       let(:facts) do
         facts
       end
       let(:params) { { ensure: 'absent' } }
 
       it { is_expected.to contain_file('snmp.conf').with_ensure('absent') }
+
       case facts[:os]['family']
-      when 'Suse'
+      when 'Suse', 'FreeBSD', 'Darwin'
         it { is_expected.not_to contain_package('snmp-client') }
       else
         it { is_expected.to contain_package('snmp-client').with_ensure('absent') }
@@ -80,8 +111,9 @@ describe 'snmp::client' do
       let(:params) { { autoupgrade: true } }
 
       it { is_expected.to contain_file('snmp.conf').with_ensure('present') }
+
       case facts[:os]['family']
-      when 'Suse'
+      when 'Suse', 'FreeBSD', 'Darwin'
         it { is_expected.not_to contain_package('snmp-client') }
       else
         it { is_expected.to contain_package('snmp-client').with_ensure('latest') }
@@ -95,6 +127,7 @@ describe 'snmp::client' do
       let(:params) { { snmp_config: ['defVersion 2c', 'defCommunity public'] } }
 
       it { is_expected.to contain_file('snmp.conf') }
+
       it 'contains File[snmp.conf] with contents "defVersion 2c" and "defCommunity public"' do
         verify_contents(catalogue, 'snmp.conf', [
                           'defVersion 2c',
